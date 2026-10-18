@@ -1,0 +1,114 @@
+@page "/dashboard"
+@rendermode InteractiveServer
+@using Teplitsa.Domain
+@using Teplitsa.Web.Services
+@inject GreenhouseSimulation Sim
+@implements IDisposable
+
+@if (Sim.Greenhouse is null || Sim.Cycle is null)
+{
+    <p>Загрузка…</p>
+}
+else
+{
+    var el = Sim.Cycle.Elapsed(DateTime.Now);
+
+    <h4>
+        @Sim.Cycle.Plan.CropName, начало цикла – @Sim.Cycle.StartedAt.ToString("dd.MM.yyyy"),
+        прошло: @((int)el.TotalDays) суток, @el.Hours часов
+    </h4>
+    @if (Sim.CurrentSlot is not null)
+    {
+        <p>Целевая температура: <strong>@Sim.CurrentSlot.TargetTemperature°C</strong>,
+           освещение: <strong>@(Sim.CurrentSlot.LightOn ? "включено" : "выключено")</strong></p>
+    }
+    
+    <p>
+        Среднее по датчикам: температура <strong>@Avg(SensorType.AirTemperature).ToString("F1")°</strong>,
+        влажность <strong>@Avg(SensorType.AirHumidity).ToString("F0")%</strong>,
+        pH <strong>@Avg(SensorType.PH).ToString("F1")</strong>
+    </p>
+    
+
+    <svg viewBox="0 0 @Sim.Greenhouse.Width @Sim.Greenhouse.Height"
+         style="width:100%;max-width:1000px;border:1px solid #888;background:#fff">
+
+        @foreach (var a in Sim.Greenhouse.Actuators)
+        {
+            <g transform="translate(@a.Position.X,@a.Position.Y)">
+                @if (a is LightSource)
+                {
+                    <circle r="10" fill="@(a.IsOn ? "#ffd43b" : "#dee2e6")" stroke="#f08c00" />
+                }
+                else if (a is Heater)
+                {
+                    <g>
+                        <rect x="-35" y="-11" width="70" height="22" rx="4"
+                            fill="@(a.IsOn ? "#51cf66" : "#ced4da")" stroke="#2b8a3e" />
+                        <text text-anchor="middle" dy="4" font-size="10">обогреватель</text>
+                    </g>
+                }
+                else if (a is Cooler)
+                {
+                    <g>
+                        <rect x="-11" y="-35" width="22" height="70" rx="4"
+                            fill="@(a.IsOn ? "#66d9e8" : "#fff")" stroke="#1098ad" stroke-width="3" />
+                        <text transform="rotate(-90)" text-anchor="middle" dy="4" font-size="10">кондиционер</text>
+                    </g>
+                }
+                else if (a is Humidifier)
+                {
+                    <polygon points="-18,-18 18,-18 26,18 -26,18"
+                             fill="@(a.IsOn ? "#9775fa" : "#ced4da")" stroke="#5f3dc4" />
+                }
+                else if (a is FertilizerDispenser)
+                {
+                    <polygon points="6,-14 -8,2 0,2 -6,14 8,-3 0,-3"
+                             fill="@(a.IsOn ? "#f59f00" : "#ced4da")" stroke="#5c3d00" />
+                }
+            </g>
+        }
+
+        @foreach (var s in Sim.Greenhouse.Sensors)
+        {
+            var bad = s is ActiveSensor act && (act.CurrentValue < act.MinAllowed || act.CurrentValue > act.MaxAllowed);
+            <g transform="translate(@Math.Clamp(s.Position.X, 30, Sim.Greenhouse.Width - 30),@Math.Clamp(s.Position.Y, 20, Sim.Greenhouse.Height - 20))">
+                <ellipse rx="26" ry="17" fill="@SensorColor(s)"
+                         stroke="@(bad ? "#e03131" : "#333")" stroke-width="@(bad ? 3 : 1)" />
+                <text text-anchor="middle" dy="4" font-size="12" fill="#fff">@Format(s)</text>
+            </g>
+        }
+    </svg>
+
+    <p style="font-size:0.9em">
+        Красная обводка у датчика означает выход значения за допустимый коридор.
+        Включённые устройства закрашены цветом, выключенные серые.
+    </p>
+}
+
+@code {
+    protected override void OnInitialized() => Sim.StateChanged += OnStateChanged;
+
+    private void OnStateChanged() => InvokeAsync(StateHasChanged);
+
+    public void Dispose() => Sim.StateChanged -= OnStateChanged;
+
+    private static string SensorColor(Sensor s) => s.Type switch
+    {
+        SensorType.AirTemperature => "#4dabf7",
+        SensorType.AirHumidity => "#1c7ed6",
+        SensorType.PH => "#c92a2a",
+        _ => "#868e96"
+    };
+
+    private double Avg(SensorType t) =>
+    Sim.Greenhouse!.Sensors.Where(x => x.Type == t).Average(x => x.CurrentValue);
+
+    private static string Format(Sensor s) => s.Type switch
+    {
+        SensorType.AirTemperature => $"{s.CurrentValue:F1}°",
+        SensorType.AirHumidity => $"{s.CurrentValue:F0}%",
+        SensorType.PH => $"{s.CurrentValue:F1}",
+        _ => $"{s.CurrentValue:F0}"
+    };
+}

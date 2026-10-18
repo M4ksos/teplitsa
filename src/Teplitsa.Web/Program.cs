@@ -1,6 +1,7 @@
 using Teplitsa.Web.Components;
 using Microsoft.EntityFrameworkCore;
 using Teplitsa.Infrastructure;
+using Teplitsa.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddInfrastructure("Data Source=teplitsa.db");
+
+builder.Services.AddSingleton<GreenhouseSimulation>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<GreenhouseSimulation>());
 
 var app = builder.Build();
 

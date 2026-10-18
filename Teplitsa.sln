@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{377AE016-7525-4BF3-938C-DF097DE8B585}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teplitsa.Domain", "src\Teplitsa.Domain\Teplitsa.Domain.csproj", "{4DD689F7-BA8F-4824-A98B-831F8A3A994E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teplitsa.Infrastructure", "src\Teplitsa.Infrastructure\Teplitsa.Infrastructure.csproj", "{42FA4CEA-7C84-47B3-9FF4-51A2F6B39186}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teplitsa.Web", "src\Teplitsa.Web\Teplitsa.Web.csproj", "{262614CD-A6AC-4CD6-8E78-867918AE8B58}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{10902232-2C83-46AF-B0AB-C176686C5E9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teplitsa.Domain.Tests", "tests\Teplitsa.Domain.Tests\Teplitsa.Domain.Tests.csproj", "{437F44E1-56F2-4083-95FC-3839421A0F51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DD689F7-BA8F-4824-A98B-831F8A3A994E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DD689F7-BA8F-4824-A98B-831F8A3A994E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DD689F7-BA8F-4824-A98B-831F8A3A994E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DD689F7-BA8F-4824-A98B-831F8A3A994E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42FA4CEA-7C84-47B3-9FF4-51A2F6B39186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42FA4CEA-7C84-47B3-9FF4-51A2F6B39186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42FA4CEA-7C84-47B3-9FF4-51A2F6B39186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42FA4CEA-7C84-47B3-9FF4-51A2F6B39186}.Release|Any CPU.Build.0 = Release|Any CPU
+		{262614CD-A6AC-4CD6-8E78-867918AE8B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{262614CD-A6AC-4CD6-8E78-867918AE8B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{262614CD-A6AC-4CD6-8E78-867918AE8B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{262614CD-A6AC-4CD6-8E78-867918AE8B58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{437F44E1-56F2-4083-95FC-3839421A0F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{437F44E1-56F2-4083-95FC-3839421A0F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{437F44E1-56F2-4083-95FC-3839421A0F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{437F44E1-56F2-4083-95FC-3839421A0F51}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4DD689F7-BA8F-4824-A98B-831F8A3A994E} = {377AE016-7525-4BF3-938C-DF097DE8B585}
+		{42FA4CEA-7C84-47B3-9FF4-51A2F6B39186} = {377AE016-7525-4BF3-938C-DF097DE8B585}
+		{262614CD-A6AC-4CD6-8E78-867918AE8B58} = {377AE016-7525-4BF3-938C-DF097DE8B585}
+		{437F44E1-56F2-4083-95FC-3839421A0F51} = {10902232-2C83-46AF-B0AB-C176686C5E9F}
+	EndGlobalSection
+EndGlobal
